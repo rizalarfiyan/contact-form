@@ -70,10 +70,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'hostname' => '127.0.0.1',
+	'username' => 'root',
+	'password' => 'password',
+	'database' => 'contact_form',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
