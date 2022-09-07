@@ -18,13 +18,14 @@
 	if (!empty($canonical)) {
 		echo "<link rel=\"canonical\" href=\"${canonical}\" />";
 	}
+	?>
+	<link rel="stylesheet" href="<?= base_url("assets/css/style.min.css") ?>" type="text/css" />
+	<?php
 	if (!empty($css)) {
 		foreach ($css as $file) {
 			echo "\n\t<link rel=\"stylesheet\" href=\"${file}\" type=\"text/css\" />";
 		}
 	}?>
-
-	<link rel="stylesheet" href="<?= base_url("assets/css/normalize.min.css") ?>" type="text/css" />
 	<?php
 	if (!empty($js)) {
 		foreach ($js as $file) {
@@ -32,17 +33,10 @@
 		}
 	}
 	?>
-
 </head>
 
-<body>
-	<div class="container">
-		<div class="row">
-			<?= $output; ?>
-			<?= $this->load->get_section('sidebar'); ?>
-
-		</div>
-	</div>
+<body class="font-sans antialiased">
+	<?= $output; ?>
 </body>
 
 </html>
