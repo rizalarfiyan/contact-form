@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Home extends CI_Controller
+class Home extends MY_Controller
 {
 	public function __construct()
 	{
@@ -14,7 +14,7 @@ class Home extends CI_Controller
 			'meta' => [
 				'title' => 'Contact Form',
 			],
-			'isLogin' => isLogin(),
+			'isLogin' => $this->isLogin,
 		];
 		$this->load->js(base_url('assets/js/home.min.js'));
 		$this->load->view('pages/home', $data);

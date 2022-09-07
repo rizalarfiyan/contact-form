@@ -21,6 +21,26 @@ class Auth_model extends CI_Model
 		];
 	}
 
+	public function user_data($user)
+	{
+		$user->avatar = isset($user->email) ? $this->get_gravatar($user->email) : '';
+		return $user;
+	}
+
+	function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $atts = [])
+	{
+		$url = 'https://www.gravatar.com/avatar/';
+		$url .= md5(strtolower(trim($email)));
+		$url .= "?s=$s&d=$d&r=$r";
+		if ($img) {
+			$url = '<img src="' . $url . '"';
+			foreach ($atts as $key => $val)
+				$url .= ' ' . $key . '="' . $val . '"';
+			$url .= ' />';
+		}
+		return $url;
+	}
+
 	public function login($username, $password)
 	{
 		$this->db->where('email', $username)->or_where('username', $username);
@@ -36,17 +56,15 @@ class Auth_model extends CI_Model
 		return $this->session->has_userdata(self::SESSION_KEY);
 	}
 
-	public function has_login() {
-		return $this->session->has_userdata(self::SESSION_KEY);
-	}
-
 	public function current_user()
 	{
-		if (!$this->has_login()) return null;
+		if (!$this->session->has_userdata(self::SESSION_KEY)) return null;
 
 		$user_id = $this->session->userdata(self::SESSION_KEY);
 		$query = $this->db->get_where($this->_table, ['id' => $user_id]);
-		return $query->row();
+		$user = $query->row();
+		if (!$user) return null;
+		return $this->user_data($user);
 	}
 
 	public function logout()
