@@ -5,6 +5,9 @@ class Auth_model extends CI_Model
 	private $_table = 'user';
 	const SESSION_KEY = 'user_id';
 
+	static $ADMIN = 'admin';
+	static $GUEST = 'guest';
+
 	public function login_rules()
 	{
 		return [

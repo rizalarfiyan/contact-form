@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class="container">
-			<h1>Ops!</h1>
+			<h1><?= $status_code ?></h1>
 			<h2><?= $heading; ?></h2>
 			<?= $message; ?>
 		</div>

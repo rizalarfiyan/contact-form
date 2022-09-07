@@ -22,4 +22,11 @@ class MY_Controller extends CI_Controller
             return redirect('/login');
         }
 	}
+
+	public function shouldBeAdmin() {
+		$this->shouldBeLogin();
+		if ($this->user->role !== Auth_model::$ADMIN) {
+			show_403();
+		}
+	}
 }
