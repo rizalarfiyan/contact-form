@@ -39,7 +39,7 @@ class Migration_Create_users extends CI_Migration
 
 		if ($this->dbforge->create_table('user')) {
 			$first_data = [
-				'id' => uniqid('', true),
+				'id' => generateId(),
 				'name' => 'Administrator',
 				'email' => 'admin@mail.com',
 				'username' => 'admin',

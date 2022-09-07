@@ -36,9 +36,13 @@ class Auth_model extends CI_Model
 		return $this->session->has_userdata(self::SESSION_KEY);
 	}
 
+	public function has_login() {
+		return $this->session->has_userdata(self::SESSION_KEY);
+	}
+
 	public function current_user()
 	{
-		if (!$this->session->has_userdata(self::SESSION_KEY)) return null;
+		if (!$this->has_login()) return null;
 
 		$user_id = $this->session->userdata(self::SESSION_KEY);
 		$query = $this->db->get_where($this->_table, ['id' => $user_id]);
