@@ -10,6 +10,13 @@ class Home extends CI_Controller
 
 	public function index()
 	{
-		$this->load->view('pages/home');
+		$data = [
+			'meta' => [
+				'title' => 'Contact Form',
+			],
+			'isLogin' => isLogin(),
+		];
+		$this->load->js(base_url('assets/js/home.min.js'));
+		$this->load->view('pages/home', $data);
 	}
 }

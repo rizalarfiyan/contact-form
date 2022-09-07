@@ -26,6 +26,10 @@
 			echo "\n\t<link rel=\"stylesheet\" href=\"${file}\" type=\"text/css\" />";
 		}
 	}?>
+</head>
+
+<body class="font-sans antialiased">
+	<?= $output; ?>
 	<?php
 	if (!empty($js)) {
 		foreach ($js as $file) {
@@ -33,10 +37,6 @@
 		}
 	}
 	?>
-</head>
-
-<body class="font-sans antialiased">
-	<?= $output; ?>
 </body>
 
 </html>

@@ -1,8 +1,8 @@
 <div class="flex items-center min-h-screen bg-gray-50">
-	<div class="flex-1 h-full max-w-[420px] md:max-w-[94%] lg:max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
+	<div class="flex-1 h-full max-w-[420px] md:max-w-[94%] lg:max-w-4xl mx-auto bg-white rounded-2xl shadow-smooth overflow-hidden">
 		<div class="flex flex-col md:flex-row">
 			<div class="hidden md:block md:w-1/2 bg-gray-50">
-				<img class="object-cover w-full h-full" src="<?= base_url('assets/images/illustration/login.svg') ?>" alt="illustration login" />
+				<img class="object-cover w-full h-full" src="<?= base_url('assets/img/illustration/login.svg') ?>" alt="illustration login" />
 			</div>
 			<div class="flex items-center justify-center p-12 md:w-1/2">
 				<div class="w-full">
