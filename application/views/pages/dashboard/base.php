@@ -1,3 +1,5 @@
-<h1>Dashboard!</h1>
-<p>Go to home <a href="/">Home</a></p>
-<p>Go to logout <a href="/logout">Logout</a></p>
+<?php include FCPATH . 'application/views/components/navbar.php' ?>
+
+<section class="pt-32 min-h-screen bg-gray-50 flex justify-center items-center">
+    <h1>Dashboard</h1>
+</section>

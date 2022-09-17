@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Base extends MY_Controller
+class Profile extends MY_Controller
 {
 	public function __construct()
 	{
@@ -13,9 +13,14 @@ class Base extends MY_Controller
 	{
 		$this->data = array_merge(
 			$this->data,
-			[],
+			[
+				'form' => [
+					'total' => 10,
+					'submit' => 1289,
+				]
+			],
 		);
 
-		$this->load->view('pages/dashboard/base', $this->data);
+		$this->load->view('pages/dashboard/profile', $this->data);
 	}
 }

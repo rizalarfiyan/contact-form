@@ -57,6 +57,7 @@ $route['(?i)login'] = 'auth/login';
 $route['(?i)logout'] = 'auth/logout';
 
 $route['(?i)dashboard'] = 'dashboard/base';
+$route['(?i)profile'] = 'dashboard/profile';
 
 if (PHP_SAPI !== 'cli') {
 	$route['(.*)'] = 'none';

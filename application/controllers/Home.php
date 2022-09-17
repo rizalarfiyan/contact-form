@@ -10,19 +10,18 @@ class Home extends MY_Controller
 
 	public function index()
 	{
-		$data = [
-			'meta' => [
-				'title' => 'Contact Form',
-			],
-			'count' => [
-				'user' => 1029,
-				'submit' => 239,
-				'form' => 6,
-			],
-			'isLogin' => $this->isLogin,
-			'user' => $this->user,
-		];
+		$this->data = array_merge(
+			$this->data,
+			[
+				'count' => [
+					'user' => 1029,
+					'submit' => 239,
+					'form' => 6,
+				]
+			]
+		);
+
 		$this->load->js(base_url('assets/js/home.min.js'));
-		$this->load->view('pages/home', $data);
+		$this->load->view('pages/home', $this->data);
 	}
 }

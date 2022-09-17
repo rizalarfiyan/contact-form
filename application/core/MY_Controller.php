@@ -4,11 +4,13 @@ class MY_Controller extends CI_Controller
 {
 	public $user;
 	public $isLogin;
+	public $data;
 
 	function __construct()
 	{
 		parent::__construct();
 		$this->getUser();
+		$this->setData();
 	}
 
 	private function getUser()
@@ -17,13 +19,23 @@ class MY_Controller extends CI_Controller
 		$this->isLogin = (bool) $this->user;
 	}
 
-	public function shouldBeLogin() {
-		if (!$this->isLogin) {
-            return redirect('/login');
-        }
+	private function setData()
+	{
+		$this->data = [
+			'isLogin' => $this->isLogin,
+			'user' => $this->user,
+		];
 	}
 
-	public function shouldBeAdmin() {
+	public function shouldBeLogin()
+	{
+		if (!$this->isLogin) {
+			return redirect('/login');
+		}
+	}
+
+	public function shouldBeAdmin()
+	{
 		$this->shouldBeLogin();
 		if ($this->user->role !== Auth_model::$ADMIN) {
 			show_403();
