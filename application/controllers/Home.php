@@ -14,7 +14,13 @@ class Home extends MY_Controller
 			'meta' => [
 				'title' => 'Contact Form',
 			],
+			'count' => [
+				'user' => 1029,
+				'submit' => 239,
+				'form' => 6,
+			],
 			'isLogin' => $this->isLogin,
+			'user' => $this->user,
 		];
 		$this->load->js(base_url('assets/js/home.min.js'));
 		$this->load->view('pages/home', $data);
