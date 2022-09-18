@@ -28,4 +28,24 @@ class Profile_model extends CI_Model
 
 		return $this->db->update($this->_table, $data, ['id' => $id]);
 	}
+
+	public function change_name_rules()
+	{
+		return [
+			[
+				'field' => 'name',
+				'label' => 'Name',
+				'rules' => 'required'
+			]
+		];
+	}
+
+	public function update_name($id, $name)
+	{
+		$data = [
+			'name' => $name,
+		];
+
+		return $this->db->update($this->_table, $data, ['id' => $id]);
+	}
 }

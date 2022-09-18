@@ -57,10 +57,7 @@ class ChangePassword extends REST_Controller
 		return $this->response([
 			'error' => false,
 			'message' => 'Change password successfully',
-			'data' => [
-				'user' => $this->user,
-				'input' => $this->input->post(['password', 'newPassword']),
-			]
+			'data' => null,
 		], REST_Controller::HTTP_OK);
 	}
 
