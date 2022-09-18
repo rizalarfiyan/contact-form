@@ -59,6 +59,9 @@ $route['(?i)logout'] = 'auth/logout';
 $route['(?i)dashboard'] = 'dashboard/base';
 $route['(?i)profile'] = 'dashboard/profile';
 
+$route['(?i)api/change-password'] = 'api/profile/changePassword';
+$route['(?i)api/change-name'] = 'api/profile/changeName';
+
 if (PHP_SAPI !== 'cli') {
 	$route['(.*)'] = 'none';
 }

@@ -1,4 +1,4 @@
-<?php include FCPATH . 'application/views/components/navbar.php' ?>
+<?php include APPPATH . '/views/components/navbar.php' ?>
 
 <section class="pt-32 min-h-screen bg-gray-50 flex justify-center items-center" x-data="{ name: '<?= $user->name ?>' }">
 	<div class="bg-white w-[94%] max-w-[520px] rounded-xl shadow-smooth">
@@ -6,7 +6,7 @@
 			<div class="flex flex-wrap justify-center">
 				<div class="w-full flex justify-center relative">
 					<div class="overflow-hidden border border-gray-300 rounded-full w-36 h-36 bg-gray-100 absolute -top-20 shadow-smooth">
-						<img class="w-full h-auto" src="https://www.gravatar.com/avatar/edb0e96701c209ab4b50211c856c50c4?s=80&d=mp&r=g" />
+						<img class="w-full h-auto" src="<?= $user->avatar ?>" alt="<?= $user->name ?> Avatar" />
 					</div>
 				</div>
 
@@ -134,7 +134,7 @@
 	</div>
 </div>
 
-<script>
+<script type="text/javascript">
 	function changePassword() {
 		return {
 			isOpen: false,
@@ -162,37 +162,40 @@
 				this.controller = new AbortController()
 				this.buttonContent = textLoading
 				this.isLoading = true
+				this.error = {
+					password: '',
+					newPassword: '',
+				}
 
-				fetch(
-						BASE_URL + '/api/change-password', {
-							method: 'POST',
-							body: JSON.stringify(this.data),
-							signal: this.controller.signal,
-						}
-					)
-					.then((response) => {
-						if (response.ok) {
-							$dispatch('notif', {
-								type: 'success',
-								text: '🔥 Success!'
-							})
-						} else {
-							$dispatch('notif', {
-								type: 'error',
-								text: `😵 ${response.status} - ${response.statusText}`
-							})
-						}
+				axios.post(BASE_URL + 'api/change-password', this.data, {
+						signal: this.controller.signal,
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
 					})
-					.catch(() => {
+					.then((res) => {
 						$dispatch('notif', {
-							type: 'errir',
-							text: '😵 Error!'
+							type: 'success',
+							text: res.data.message
 						})
+						this.data = {
+							password: '',
+							newPassword: '',
+						}
+						this.close()
+					})
+					.catch((res) => {
+						const isCancel = res.code === "ERR_CANCELED"
+						$dispatch('notif', {
+							type: 'error',
+							text: isCancel ? 'Cancel request by User!' : res.response.data.message
+						})
+						if (isCancel) return this.close();
+						if (res.response.status === 400) this.error = res.response.data.data
 					})
 					.finally(() => {
 						this.isLoading = false
 						this.buttonContent = textSubmit
-						this.close()
 					})
 			},
 		}
@@ -225,14 +228,14 @@
 				this.isLoading = true
 
 				fetch(
-						BASE_URL + '/api/change-name', {
+						BASE_URL + 'api/change-name', {
 							method: 'POST',
 							body: JSON.stringify(this.data),
 							signal: this.controller.signal,
 						}
 					)
-					.then((response) => {
-						if (response.ok) {
+					.then((res) => {
+						if (res.ok) {
 							$dispatch('notif', {
 								type: 'success',
 								text: '🔥 Success!'
@@ -240,13 +243,13 @@
 						} else {
 							$dispatch('notif', {
 								type: 'error',
-								text: `😵 ${response.status} - ${response.statusText}`
+								text: `😵 ${res.status} - ${res.statusText}`
 							})
 						}
 					})
 					.catch(() => {
 						$dispatch('notif', {
-							type: 'errir',
+							type: 'error',
 							text: '😵 Error!'
 						})
 					})

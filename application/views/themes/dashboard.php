@@ -27,6 +27,7 @@
 		}
 	} ?>
 	<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" type="text/javascript" charset="utf-8"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body class="font-sans antialiased" x-data="{ showNav: false }">

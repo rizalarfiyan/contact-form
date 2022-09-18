@@ -41,4 +41,10 @@ class MY_Controller extends CI_Controller
 			show_403();
 		}
 	}
+
+	public function shouldBeAjaxRequest() {
+		if (!$this->input->is_ajax_request()) {
+			show_404();
+		}
+	}
 }
