@@ -19,9 +19,10 @@ class ChangeName extends REST_Controller
 			], REST_Controller::HTTP_UNAUTHORIZED);
 		}
 
+		$this->load->service('profile_service');
 		$this->load->library('form_validation');
-		$this->load->model('profile_model');
-		$rule = $this->profile_model->change_name_rules();
+
+		$rule = $this->profile_service->changeNameRules();
 		$this->form_validation->set_rules($rule);
 		if ($this->form_validation->run() == FALSE) {
 			return $this->response([
@@ -35,7 +36,7 @@ class ChangeName extends REST_Controller
 
 		$name = $this->input->post('name');
 		try {
-			$this->profile_model->update_name($this->user->id, $name);
+			$this->profile_service->updateName($this->user->id, $name);
 		} catch (\Exception $e) {
 			return $this->response([
 				'error' => true,

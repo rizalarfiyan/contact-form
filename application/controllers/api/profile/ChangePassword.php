@@ -19,10 +19,12 @@ class ChangePassword extends REST_Controller
 			], REST_Controller::HTTP_UNAUTHORIZED);
 		}
 
+		$this->load->service('profile_service');
 		$this->load->library('form_validation');
-		$this->load->model('profile_model');
-		$rule = $this->profile_model->change_password_rules();
+
+		$rule = $this->profile_service->changePasswordRules();
 		$this->form_validation->set_rules($rule);
+
 		if ($this->form_validation->run() == FALSE) {
 			return $this->response([
 				'error' => true,
@@ -45,7 +47,7 @@ class ChangePassword extends REST_Controller
 		}
 
 		try {
-			$this->profile_model->update_password($this->user->id, $newPassword);
+			$this->profile_service->updatePassword($this->user->id, $newPassword);
 		} catch (\Exception $e) {
 			return $this->response([
 				'error' => true,

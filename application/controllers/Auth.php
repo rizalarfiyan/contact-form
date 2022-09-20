@@ -19,7 +19,7 @@ class Auth extends MY_Controller
 		];
 
 		$this->load->library('form_validation');
-		$rules = $this->auth_model->login_rules();
+		$rules = $this->auth_service->loginRules();
 		$this->form_validation->set_rules($rules);
 		if ($this->form_validation->run() == FALSE) {
 			return $this->load->view('pages/login', $data);
@@ -27,7 +27,7 @@ class Auth extends MY_Controller
 
 		$identity = $this->input->post('identity');
 		$password = $this->input->post('password');
-		if ($this->auth_model->login($identity, $password)) redirect('dashboard');
+		if ($this->auth_service->login($identity, $password)) redirect('dashboard');
 
 		$this->session->set_flashdata('message_login_error', 'Login failed! The identity or password are incorrect.');
 		$this->load->view('pages/login', $data);
@@ -36,7 +36,7 @@ class Auth extends MY_Controller
 	public function logout()
 	{
 		if (!$this->isLogin) redirect('login');
-		$this->auth_model->logout();
+		$this->auth_service->logout();
 		redirect(site_url());
 	}
 }

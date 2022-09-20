@@ -6,19 +6,15 @@ class Home extends MY_Controller
 	{
 		parent::__construct();
 		$this->output->set_template('default');
+		$this->load->service('analytic_service');
 	}
 
 	public function index()
 	{
-		$this->load->model('count_model');
 		$this->data = array_merge(
 			$this->data,
 			[
-				'count' => [
-					'user' => $this->count_model->count_users(),
-					'submit' => 239,
-					'form' => 6,
-				]
+				'count' => $this->analytic_service->getTotal(),
 			]
 		);
 

@@ -9,13 +9,14 @@ class MY_Controller extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->service('auth_service');
 		$this->getUser();
 		$this->setData();
 	}
 
 	private function getUser()
 	{
-		$this->user = $this->auth_model->current_user();
+		$this->user = $this->auth_service->currentUser();
 		$this->isLogin = (bool) $this->user;
 	}
 

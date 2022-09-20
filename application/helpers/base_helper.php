@@ -7,6 +7,21 @@ if (!function_exists('generateId')) {
 	}
 }
 
+if (!function_exists('getGravatar')) {
+	function getGravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $atts = [])
+	{
+		$url = 'https://www.gravatar.com/avatar/';
+		$url .= md5(strtolower(trim($email)));
+		$url .= "?s=$s&d=$d&r=$r";
+		if ($img) {
+			$url = '<img src="' . $url . '"';
+			foreach ($atts as $key => $val)
+				$url .= ' ' . $key . '="' . $val . '"';
+			$url .= ' />';
+		}
+		return $url;
+	}
+}
 
 if (!function_exists('show_403')) {
 	function show_403()
