@@ -10,11 +10,12 @@ class Home extends MY_Controller
 
 	public function index()
 	{
+		$this->load->model('count_model');
 		$this->data = array_merge(
 			$this->data,
 			[
 				'count' => [
-					'user' => 1029,
+					'user' => $this->count_model->count_users(),
 					'submit' => 239,
 					'form' => 6,
 				]
