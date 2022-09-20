@@ -2,11 +2,12 @@
 
 class Auth_model extends CI_Model
 {
-	private $_table = 'user';
 	const SESSION_KEY = 'user_id';
 
-	static $ADMIN = 'admin';
-	static $GUEST = 'guest';
+	public function __construct()
+	{
+		$this->load->model('user_model');
+	}
 
 	public function login_rules()
 	{
@@ -22,12 +23,6 @@ class Auth_model extends CI_Model
 				'rules' => 'required|max_length[64]'
 			]
 		];
-	}
-
-	public function user_data($user)
-	{
-		$user->avatar = isset($user->email) ? $this->get_gravatar($user->email) : '';
-		return $user;
 	}
 
 	function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $atts = [])
@@ -47,7 +42,7 @@ class Auth_model extends CI_Model
 	public function login($username, $password)
 	{
 		$this->db->where('email', $username)->or_where('username', $username);
-		$query = $this->db->get($this->_table);
+		$query = $this->db->get(User_model::$table);
 		$user = $query->row();
 
 		if (!$user) return FALSE;
@@ -64,7 +59,7 @@ class Auth_model extends CI_Model
 		if (!$this->session->has_userdata(self::SESSION_KEY)) return null;
 
 		$user_id = $this->session->userdata(self::SESSION_KEY);
-		$query = $this->db->get_where($this->_table, ['id' => $user_id]);
+		$query = $this->db->get_where(User_model::$table, ['id' => $user_id]);
 		$user = $query->row();
 		if (!$user) return null;
 		return $this->user_data($user);
@@ -76,12 +71,18 @@ class Auth_model extends CI_Model
 		return !$this->session->has_userdata(self::SESSION_KEY);
 	}
 
+	public function user_data($user)
+	{
+		$user->avatar = isset($user->email) ? $this->get_gravatar($user->email) : '';
+		return $user;
+	}
+
 	private function _update_last_login($id)
 	{
 		$data = [
 			'last_login' => date('Y-m-d H:i:s'),
 		];
 
-		return $this->db->update($this->_table, $data, ['id' => $id]);
+		return $this->db->update(User_model::$table, $data, ['id' => $id]);
 	}
 }

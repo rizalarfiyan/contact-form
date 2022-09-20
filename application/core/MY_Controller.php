@@ -37,7 +37,7 @@ class MY_Controller extends CI_Controller
 	public function shouldBeAdmin()
 	{
 		$this->shouldBeLogin();
-		if ($this->user->role !== Auth_model::$ADMIN) {
+		if ($this->user->role !== User_model::$admin) {
 			show_403();
 		}
 	}

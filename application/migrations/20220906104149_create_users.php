@@ -6,6 +6,7 @@ class Migration_Create_users extends CI_Migration
 	{
 		parent::__construct();
 		$this->load->dbforge();
+		$this->load->model(['user_model']);
 	}
 
 	public function up()
@@ -13,27 +14,33 @@ class Migration_Create_users extends CI_Migration
 		$this->dbforge->add_field([
 			'id' => [
 				'type' => 'VARCHAR',
-				'constraint' => 32
+				'constraint' => 32,
 			],
 			'name' => [
 				'type' => 'VARCHAR',
-				'constraint' => 32
+				'constraint' => 32,
+				'null' => FALSE,
 			],
 			'email' => [
 				'type' => 'VARCHAR',
-				'constraint' => 64
+				'constraint' => 64,
+				'unique' => TRUE,
+				'null' => FALSE,
 			],
 			'username' => [
 				'type' => 'VARCHAR',
-				'constraint' => 64
+				'constraint' => 64,
+				'unique' => TRUE,
+				'null' => FALSE,
 			],
 			'password' => [
 				'type' => 'VARCHAR',
-				'constraint' => 255
+				'constraint' => 255,
+				'null' => FALSE,
 			],
 			'role' => [
-				'type' => 'ENUM("' . Auth_model::$ADMIN . '","' . Auth_model::$GUEST . '")',
-				'default' => 'guest',
+				'type' => 'ENUM("' . User_model::$admin . '","' . User_model::$guest . '")',
+				'default' => User_model::$guest,
 				'null' => FALSE,
 			],
 		]);
@@ -42,24 +49,24 @@ class Migration_Create_users extends CI_Migration
 		$this->dbforge->add_field('last_login TIMESTAMP');
 		$this->dbforge->add_key('id', TRUE);
 
-		if ($this->dbforge->create_table('user')) {
+		if ($this->dbforge->create_table(User_model::$table)) {
 			$first_data = [
 				'id' => generateId(),
 				'name' => 'Administrator',
 				'email' => 'admin@mail.com',
 				'username' => 'admin',
 				'password' => password_hash('password', PASSWORD_DEFAULT),
-				'role' => Auth_model::$ADMIN,
+				'role' => User_model::$admin,
 			];
-			$this->db->insert('user', $first_data);
-			printf("✅ Table `user` created\n");
+			$this->db->insert(User_model::$table, $first_data);
+			printf("✅ Table `" . User_model::$table . "` created\n");
 		}
 	}
 
 	public function down()
 	{
-		if ($this->dbforge->drop_table('user')) {
-			printf("❌ Table `user` deleted\n");
+		if ($this->dbforge->drop_table(User_model::$table)) {
+			printf("❌ Table `" . User_model::$table . "` deleted\n");
 		}
 	}
 }
