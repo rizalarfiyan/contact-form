@@ -64,7 +64,7 @@
 			<img src="<?= base_url('assets/img/illustration/hero-section.svg') ?>" alt="Hero Section Illustration" />
 		</div>
 	</div>
-	<div class="w-full flex">
+	<div class="w-full flex" x-data="{format(a){return 1e3>a?a+'+':1e3<=a&&1e6>a?+(a/1e3).toFixed(1)+'K+':1e6<=a&&1e9>a?+(a/1e6).toFixed(1)+'M+':1e9<=a&&1e12>a?+(a/1e9).toFixed(1)+'B+':1e12<=a?+(a/1e12).toFixed(1)+'T+':void 0}}">
 		<div class="rounded-lg w-full grid grid-flow-row sm:grid-flow-row grid-cols-1 sm:grid-cols-3 py-9 divide-y-2 sm:divide-y-0 sm:divide-x-2 divide-gray-100 bg-white-500 z-10">
 			<div class="flex items-center justify-start sm:justify-center py-4 sm:py-6 w-8/12 px-4 sm:w-auto mx-auto sm:mx-0">
 				<div class="flex mx-auto w-40 sm:w-auto">
@@ -72,19 +72,8 @@
 						<img src="<?= base_url('assets/img/icon/user.svg') ?>" class="h-6 w-6" />
 					</div>
 					<div class="flex flex-col">
-						<p class="text-xl text-black-600 font-bold"><?= $count['user'] ?>+</p>
+						<p class="text-xl text-black-600 font-bold" x-text="format(<?= $count['user'] ?>)">0+</p>
 						<p class="text-lg text-black-500">Users</p>
-					</div>
-				</div>
-			</div>
-			<div class="flex items-center justify-start sm:justify-center py-4 sm:py-6 w-8/12 px-4 sm:w-auto mx-auto sm:mx-0">
-				<div class="flex mx-auto w-40 sm:w-auto">
-					<div class="flex items-center justify-center bg-blue-100 w-12 h-12 mr-6 rounded-full">
-						<img src="<?= base_url('assets/img/icon/form.svg') ?>" class="h-6 w-6" />
-					</div>
-					<div class="flex flex-col">
-						<p class="text-xl text-black-600 font-bold"><?= $count['submit'] ?>+</p>
-						<p class="text-lg text-black-500">Submit</p>
 					</div>
 				</div>
 			</div>
@@ -94,8 +83,19 @@
 						<img src="<?= base_url('assets/img/icon/document.svg') ?>" class="h-6 w-6" />
 					</div>
 					<div class="flex flex-col">
-						<p class="text-xl text-black-600 font-bold"><?= $count['form'] ?>+</p>
+						<p class="text-xl text-black-600 font-bold" x-text="format(<?= $count['form'] ?>)">0+</p>
 						<p class="text-lg text-black-500">Forms</p>
+					</div>
+				</div>
+			</div>
+			<div class="flex items-center justify-start sm:justify-center py-4 sm:py-6 w-8/12 px-4 sm:w-auto mx-auto sm:mx-0">
+				<div class="flex mx-auto w-40 sm:w-auto">
+					<div class="flex items-center justify-center bg-blue-100 w-12 h-12 mr-6 rounded-full">
+						<img src="<?= base_url('assets/img/icon/form.svg') ?>" class="h-6 w-6" />
+					</div>
+					<div class="flex flex-col">
+						<p class="text-xl text-black-600 font-bold" x-text="format(<?= $count['submit'] ?>)">0+</p>
+						<p class="text-lg text-black-500">Submit</p>
 					</div>
 				</div>
 			</div>
