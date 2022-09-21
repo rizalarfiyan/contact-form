@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Profile_service extends CI_Model
+class Profile_service extends MY_Service
 {
 	public function __construct()
 	{

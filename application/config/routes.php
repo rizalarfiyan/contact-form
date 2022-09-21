@@ -61,7 +61,7 @@ $route['(?i)profile'] = 'dashboard/profile';
 
 $route['(?i)api/change-password'] = 'api/profile/changePassword';
 $route['(?i)api/change-name'] = 'api/profile/changeName';
-$route['(?i)api/add-form'] = 'api/form/addForm';
+$route['(?i)api/form'] = 'api/form';
 
 if (PHP_SAPI !== 'cli') {
 	$route['(.*)'] = 'none';

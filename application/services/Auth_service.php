@@ -57,6 +57,11 @@ class Auth_service extends MY_Service
 		return $user;
 	}
 
+	public function isAdmin($role)
+	{
+		return $role === User_model::$admin;
+	}
+
 	public function logout()
 	{
 		$this->session->unset_userdata(self::SESSION_KEY);

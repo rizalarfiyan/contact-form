@@ -38,14 +38,8 @@ class MY_Controller extends CI_Controller
 	public function shouldBeAdmin()
 	{
 		$this->shouldBeLogin();
-		if ($this->user->role !== User_model::$admin) {
+		if (!$this->auth_service->isAdmin($this->user->role)) {
 			show_403();
-		}
-	}
-
-	public function shouldBeAjaxRequest() {
-		if (!$this->input->is_ajax_request()) {
-			show_404();
 		}
 	}
 }

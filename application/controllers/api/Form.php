@@ -2,7 +2,7 @@
 
 require APPPATH . 'libraries/REST_Controller.php';
 
-class AddForm extends REST_Controller
+class Form extends REST_Controller
 {
 	public function __construct()
 	{
@@ -54,7 +54,23 @@ class AddForm extends REST_Controller
 
 	public function index_get()
 	{
-		show_404();
+		if (!$this->isLogin) {
+			return $this->response([
+				'error' => true,
+				'message' => 'Unauthorized user!',
+				'data' => null,
+			], REST_Controller::HTTP_UNAUTHORIZED);
+		}
+
+		$this->load->service('form_service');
+		$position = $this->input->get('position');
+		$position = !empty($position) ? $position : '';
+		$data = $this->form_service->getAll($this->user, $position);
+		$this->response([
+			'error' => false,
+			'message' => 'Show form successfully',
+			'data' => $data,
+		], REST_Controller::HTTP_OK);
 	}
 
 	public function index_put()

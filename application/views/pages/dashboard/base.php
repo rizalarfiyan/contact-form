@@ -1,7 +1,7 @@
 <?php include APPPATH . '/views/components/navbar.php' ?>
 
-<section class="pt-32 bg-gray-50 min-h-screen">
-	<div class="container" x-data="{ hasLoadMore: false }">
+<section class="pt-32 bg-gray-50 min-h-screen" x-init="$nextTick(() => {$dispatch('form-content', true)})">
+	<div class="container" x-data="getContent" x-on:form-content.window="loadContent($dispatch, $event.detail)">
 		<div class="flex flex-col gap-6">
 			<button class="btn ml-auto has-icon" type="button" x-data="{id : 'add-form'}" x-on:click="$dispatch('modal', {id})">
 				<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -10,12 +10,24 @@
 				<span>Add</span>
 			</button>
 			<div class="flex gap-4 justify-center items-center flex-wrap">
-				<div class="min-h-[320px] w-full rounded-xl flex justify-center items-center bg-gray-100">
+				<div class="min-h-[320px] w-full rounded-xl flex justify-center items-center bg-gray-100" x-show="isLoading" x-cloak>
 					<div class="loader border-gray-800 border-t-gray-200 border-4 h-10 w-10"></div>
 				</div>
+				<template x-for="content of contents" :key="content.id">
+					<a x-bind:href="getFormLink(content.id)" class="w-full rounded-lg max-w-[360px] py-4 px-6 flex gap-4 items-center justify-between shadow-smooth border border-gray-200">
+						<h2 class="text-xl text-gray-800 font-semibold line-clamp-2" x-text="content.name"></h2>
+						<div class="flex gap-1 flex-col items-center text-gray-6s00 p-2 rounded-md shadow-lg min-w-[65px]">
+							<svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M21,12a1,1,0,0,0-1,1v6a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4h6a1,1,0,0,0,0-2H5A3,3,0,0,0,2,5V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V13A1,1,0,0,0,21,12ZM6,12.76V17a1,1,0,0,0,1,1h4.24a1,1,0,0,0,.71-.29l6.92-6.93h0L21.71,8a1,1,0,0,0,0-1.42L17.47,2.29a1,1,0,0,0-1.42,0L13.23,5.12h0L6.29,12.05A1,1,0,0,0,6,12.76ZM16.76,4.41l2.83,2.83L18.17,8.66,15.34,5.83ZM8,13.17l5.93-5.93,2.83,2.83L10.83,16H8Z">
+								</path>
+							</svg>
+							<span class="text-xs" x-text="content.total">0</span>
+						</div>
+					</a>
+				</template>
 			</div>
-			<div class="mx-auto" x-show="hasLoadMore" x-cloak>
-				<button class="btn has-icon" type="button">
+			<div class="mx-auto">
+				<button class="btn has-icon" type="button" x-show="hasLoadMore" x-cloak @click="loadContent($dispatch)">
 					Load More
 				</button>
 			</div>
@@ -57,6 +69,45 @@
 </div>
 
 <script type="text/javascript">
+	function getContent() {
+		return {
+			hasLoadMore: true,
+			isLoading: true,
+			next: '',
+			contents: [],
+			getFormLink(idx) {
+				return BASE_URL + 'form/' + idx
+			},
+			loadContent($dispatch, isFirst = false) {
+				this.isLoading = true
+				axios.get(BASE_URL + 'api/form', {
+						params: {
+							position: isFirst ? '' : this.next,
+						},
+					})
+					.then((res) => {
+						if (isFirst) {
+							this.contents = res.data.data.content;
+							this.hasLoadMore = true;
+						} else {
+							this.contents = [...this.contents, ...res.data.data.content];
+						}
+						this.next = res.data.data.next;
+						if (this.next == '') this.hasLoadMore = false
+					})
+					.catch((res) => {
+						$dispatch('notif', {
+							type: 'error',
+							text: res.response.data.message
+						})
+					})
+					.finally(() => {
+						this.isLoading = false
+					})
+			}
+		}
+	}
+
 	function addForm() {
 		return {
 			isOpen: false,
@@ -84,7 +135,7 @@
 				this.isLoading = true
 				this.error.name = ''
 
-				axios.post(BASE_URL + 'api/add-form', this.data, {
+				axios.post(BASE_URL + 'api/form', this.data, {
 						signal: this.controller.signal,
 						headers: {
 							'Content-Type': 'multipart/form-data',
@@ -95,8 +146,8 @@
 							type: 'success',
 							text: res.data.message
 						})
-						// update dispatch
 						this.data.name = ''
+						$dispatch('form-content', true)
 						this.close()
 					})
 					.catch((res) => {
